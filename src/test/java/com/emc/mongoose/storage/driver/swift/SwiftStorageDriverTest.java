@@ -124,8 +124,7 @@ extends SwiftStorageDriver {
 		super(
 			"test-storage-driver-swift",
 			DataInput.getInstance(null, "7a42d9c483244167", new SizeInBytes("4MB"), 16),
-			config.getLoadConfig(), config.getStorageConfig(),
-			false
+			config.getLoadConfig(), config.getStorageConfig(), false
 		);
 	}
 
