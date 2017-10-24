@@ -177,7 +177,7 @@ uploadArchives {
 			pom {
 
 				groupId = rootProject.group
-				name = "mongoose-storage-driver-fs"
+				name = "mongoose-storage-driver-swift"
 				artifactId = name
 
 				project {
