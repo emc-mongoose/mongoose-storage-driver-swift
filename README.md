@@ -65,6 +65,7 @@ java -jar mongoose-<VERSION>/mongoose.jar \
 
 * To specify an auth token use the `storage-auth-token` configuration option
 * Container may be specified with `item-input-path` either `item-output-path` configuration option
+* DLO segments upload should be enabled using the `item-data-ranges-threshold` configuration option
 
 ## Docker
 
