@@ -453,9 +453,7 @@ extends HttpStorageDriverBase<I, O> {
 		return httpRequest;
 	}
 	
-	private HttpRequest getUploadPartRequest(
-		final PartialDataIoTask ioTask, final String nodeAddr
-	) {
+	private HttpRequest getUploadPartRequest(final PartialDataIoTask ioTask, final String nodeAddr) {
 		final I item = (I) ioTask.getItem();
 		final String srcPath = ioTask.getSrcPath();
 		final String partNumStr = Integer.toString(ioTask.getPartNumber() + 1);
