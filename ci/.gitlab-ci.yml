@@ -104,6 +104,12 @@ build_docker_image:
       - build/robotest/*.html
     when: on_failure
 
+test_api_storage_swift:
+  extends: .test_robot
+  variables:
+    SUITE: api.storage
+    TEST: swift
+
 release_to_maven_repo:
   stage: deploy
   script:
