@@ -203,16 +203,16 @@ publishing {
 			pom {
 				name = project.name
 				description = project.description
-				url = "https://github.com/emc-mongoose/mongoose-storage-driver-http"
+				url = "https://github.com/emc-mongoose/mongoose-storage-driver-swift"
 				scm {
-					connection = "https://github.com/emc-mongoose/mongoose-storage-driver-http.git"
-					developerConnection = "https://github.com/emc-mongoose/mongoose-storage-driver-http.git"
-					url = "https://github.com/emc-mongoose/mongoose-storage-driver-httpe.git"
+					connection = "https://github.com/emc-mongoose/mongoose-storage-driver-swift.git"
+					developerConnection = "https://github.com/emc-mongoose/mongoose-storage-driver-swift.git"
+					url = "https://github.com/emc-mongoose/mongoose-storage-driver-swift.git"
 				}
 				licenses {
 					license {
 						name = "The MIT License (MIT)"
-						url = "https://github.com/emc-mongoose/mongoose-storage-driver-http/LICENSE"
+						url = "https://github.com/emc-mongoose/mongoose-storage-driver-swift/LICENSE"
 					}
 				}
 				developers {
