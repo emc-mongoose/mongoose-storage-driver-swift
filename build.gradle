@@ -305,8 +305,6 @@ task dockerCreateContainerRobotest(type: DockerCreateContainer, dependsOn: [dock
 	network = "host"
 	tty = true
 	doLast {
-		println "Binds:\n${rootProject.buildDir}\t/root/${project.name}/build"
-		println "HOST_WORKING_DIR: ${rootProject.projectDir.absolutePath}"
 		println "Created the container for the ${System.env.SUITE}.${System.env.TEST} test"
 	}
 }
