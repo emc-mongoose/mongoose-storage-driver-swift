@@ -253,7 +253,9 @@ import com.bmuschko.gradle.docker.tasks.container.*
 task dockerBuildImage(type: DockerBuildImage) {
 	inputDir = project.projectDir
 	buildArgs = [
-		"BASE_VERSION": depVersion.mongooseStorageDriverHttp,
+		"BASE_VERSION": depVersion.mongooseBase,
+		"BASE_DRIVER_VERSION": depVersion.mongooseStorageDriverHttp,
+		"VERSION": version,
 	]
 	dockerFile = project.file("ci${File.separator}docker${File.separator}Dockerfile")
 	imageId = "emcmongoose/${project.name}".toString()
