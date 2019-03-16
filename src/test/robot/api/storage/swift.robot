@@ -34,6 +34,8 @@ Should Copy Objects Using Container Listing
     &{env_params} =  Create Dictionary  ITEM_SRC_PATH=/container0  ITEM_DST_PATH=/container1
     ${std_out} =  Execute Mongoose Scenario  ${DATA_DIR}  ${env_params}  ${MONGOOSE_SHARED_ARGS} ${args} --storage-auth-secret=${SWIFT_SECRET_KEY}
     Log  ${std_out}
+    ${std_out} =  Run  pwd
+    Log  ${std_out}
     Validate Log File Metrics Total  ${LOG_DIR}/${step_id}  count_succ_min=${object_count_limit}
     ...  count_succ_max=${object_count_limit}  transfer_size=${10240000}
 
