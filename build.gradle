@@ -291,7 +291,7 @@ task dockerCreateContainerRobotest(type: DockerCreateContainer, dependsOn: [dock
 	attachStdout = true
 	autoRemove = true
 	binds = [
-		"${rootProject.buildDir}": "/root/mongoose/build",
+		"${rootProject.buildDir}": "/root/${project.name}/build",
 		"/var/run/docker.sock": "/var/run/docker.sock",
 	]
 	envVars = [
