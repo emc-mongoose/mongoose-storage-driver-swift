@@ -49,7 +49,7 @@ ext {
 		scala              : "2.12.6",
 		slf4j              : "1.7.25",
 	]
-	rootPkg = "com.emc.mongoose.storage.driver.coop.netty"
+	rootPkg = "com.emc.mongoose.storage.driver.coop.swift"
 	baseJarFileName = "mongoose"
 	javaHome = System.properties["java.home"]
 	jreOutputDir = "${project.buildDir}${File.separator}jre"
