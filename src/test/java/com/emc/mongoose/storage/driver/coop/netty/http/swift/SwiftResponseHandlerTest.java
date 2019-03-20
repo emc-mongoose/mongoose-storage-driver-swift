@@ -45,18 +45,18 @@ public class SwiftResponseHandlerTest {
 
 	private static final String EXPECTED_CONTENT = "\naaa\naaaaaaa";
 	private static final String BOUNDARY = "--3d07fbbddf4041880c931c29e43cb6c4";
-	private static final EmbeddedChannel channel = new EmbeddedChannel(); // channel mock
+	private static final EmbeddedChannel CHANNEL = new EmbeddedChannel(); // CHANNEL mock
 	private static final AttributeKey<String> ATTR_KEY_BOUNDARY_MARKER = AttributeKey
 					.valueOf("boundary_marker");
 	private static final AttributeKey<String> ATTR_KEY_CUT_CHUNK = AttributeKey
 					.valueOf("cut_chunk");
-	private static final SwiftResponseHandler responseHandler = new SwiftResponseHandler(null,
+	private static final SwiftResponseHandler RESPONSE_HANDLER = new SwiftResponseHandler(null,
 					true);
 
 	@Before
 	public void setUp() {
-		channel.attr(ATTR_KEY_BOUNDARY_MARKER).set(BOUNDARY);
-		channel.attr(ATTR_KEY_CUT_CHUNK).set("");
+		CHANNEL.attr(ATTR_KEY_BOUNDARY_MARKER).set(BOUNDARY);
+		CHANNEL.attr(ATTR_KEY_CUT_CHUNK).set("");
 	}
 
 	private ByteBuf readFromChannel(final EmbeddedChannel channel) {
@@ -81,10 +81,10 @@ public class SwiftResponseHandlerTest {
 
 	@Test
 	public void fullContentTest() throws IOException {
-		channel.writeOutbound(HTTP_RESPONSE);
+		CHANNEL.writeOutbound(HTTP_RESPONSE);
 		final var expectedContent = Unpooled.copiedBuffer(EXPECTED_CONTENT.getBytes());
-		final var contentChunk = readFromChannel(channel);
-		final var newContentChunk = responseHandler.removeHeaders(channel, null, contentChunk);
+		final var contentChunk = readFromChannel(CHANNEL);
+		final var newContentChunk = RESPONSE_HANDLER.removeHeaders(CHANNEL, null, contentChunk);
 
 		Assert.assertEquals(expectedContent.array().length, newContentChunk.array().length);
 		assertEqualsByBytes(expectedContent, newContentChunk);
@@ -94,13 +94,13 @@ public class SwiftResponseHandlerTest {
 	public void unicodeContentTest() throws IOException {
 		final var expectedContent = Unpooled.copiedBuffer(new byte[]{-3, -17, 10, -3, -10
 		});
-		channel.writeOutbound(HTTP_RESPONSE_START);
-		channel.writeOutbound(expectedContent);
-		channel.writeOutbound(HTTP_RESPONSE_END);
-		final var rawActualContent = Unpooled.copiedBuffer(readFromChannel(channel),
-						readFromChannel(channel),
-						readFromChannel(channel));
-		final var actualContent = responseHandler.removeHeaders(channel, null, rawActualContent);
+		CHANNEL.writeOutbound(HTTP_RESPONSE_START);
+		CHANNEL.writeOutbound(expectedContent);
+		CHANNEL.writeOutbound(HTTP_RESPONSE_END);
+		final var rawActualContent = Unpooled.copiedBuffer(readFromChannel(CHANNEL),
+						readFromChannel(CHANNEL),
+						readFromChannel(CHANNEL));
+		final var actualContent = RESPONSE_HANDLER.removeHeaders(CHANNEL, null, rawActualContent);
 
 		Assert.assertEquals(expectedContent.array().length, actualContent.array().length);
 		assertEqualsByBytes(expectedContent, actualContent);
@@ -110,13 +110,13 @@ public class SwiftResponseHandlerTest {
 	public void partContentTest() throws IOException {
 		final var expectedContent = Unpooled.copiedBuffer(EXPECTED_CONTENT.getBytes());
 
-		channel.writeOutbound(PART_1_HTTP_RESPONSE);
-		final var contentChunk1 = readFromChannel(channel);
-		final var newContentChunk1 = responseHandler.removeHeaders(channel, null, contentChunk1);
+		CHANNEL.writeOutbound(PART_1_HTTP_RESPONSE);
+		final var contentChunk1 = readFromChannel(CHANNEL);
+		final var newContentChunk1 = RESPONSE_HANDLER.removeHeaders(CHANNEL, null, contentChunk1);
 
-		channel.writeOutbound(PART_2_HTTP_RESPONSE);
-		final var contentChunk2 = readFromChannel(channel);
-		final var newContentChunk2 = responseHandler.removeHeaders(channel, null, contentChunk2);
+		CHANNEL.writeOutbound(PART_2_HTTP_RESPONSE);
+		final var contentChunk2 = readFromChannel(CHANNEL);
+		final var newContentChunk2 = RESPONSE_HANDLER.removeHeaders(CHANNEL, null, contentChunk2);
 
 		final var fullContentChunk = Unpooled.copiedBuffer(newContentChunk1, newContentChunk2);
 
