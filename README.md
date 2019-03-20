@@ -68,3 +68,4 @@ java -jar mongoose-<VERSION>.jar \
 * DLO creation should be enabled using the `item-data-ranges-threshold` configuration option
 * [Defect GOOSE-1316](https://mongoose-issues.atlassian.net/browse/GOOSE-1316): unable to verify the response content in
  the case of multiple byte ranges read
+* The storage port is set to 9020 by default for the docker image
