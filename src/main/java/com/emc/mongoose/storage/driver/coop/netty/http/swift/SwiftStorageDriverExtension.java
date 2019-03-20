@@ -1,17 +1,16 @@
 package com.emc.mongoose.storage.driver.coop.netty.http.swift;
 
+import static com.emc.mongoose.base.Constants.APP_NAME;
+
+import com.emc.mongoose.base.config.IllegalConfigurationException;
 import com.emc.mongoose.base.data.DataInput;
 import com.emc.mongoose.base.env.ExtensionBase;
-import com.emc.mongoose.base.config.IllegalConfigurationException;
 import com.emc.mongoose.base.item.Item;
 import com.emc.mongoose.base.item.op.Operation;
 import com.emc.mongoose.base.storage.driver.StorageDriverFactory;
-import static com.emc.mongoose.base.Constants.APP_NAME;
-
 import com.github.akurilov.confuse.Config;
 import com.github.akurilov.confuse.SchemaProvider;
 import com.github.akurilov.confuse.io.yaml.YamlSchemaProviderBase;
-
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;

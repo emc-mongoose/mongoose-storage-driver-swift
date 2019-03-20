@@ -11,8 +11,8 @@ Test Setup  Start Swift Server
 Test Teardown  Remove Containers
 
 *** Variables ***
-${DATA_DIR} =  src/test/robot/api/storage/data
-${LOG_DIR} =  build/log
+${DATA_DIR} =  base/src/test/robot/api/storage/data
+${LOG_DIR} =  base/build/log
 ${SWIFT_IMAGE_NAME} =  serverascode/swift-onlyone
 ${SWIFT_IMAGE_VERSION} =  latest
 ${SWIFT_PORT} =  8080
@@ -33,8 +33,6 @@ Should Copy Objects Using Container Listing
     ...  --run-scenario=${MONGOOSE_CONTAINER_DATA_DIR}/copy_using_input_path.js
     &{env_params} =  Create Dictionary  ITEM_SRC_PATH=/container0  ITEM_DST_PATH=/container1
     ${std_out} =  Execute Mongoose Scenario  ${DATA_DIR}  ${env_params}  ${MONGOOSE_SHARED_ARGS} ${args} --storage-auth-secret=${SWIFT_SECRET_KEY}
-    Log  ${std_out}
-    ${std_out} =  Run  pwd
     Log  ${std_out}
     Validate Log File Metrics Total  ${LOG_DIR}/${step_id}  count_succ_min=${object_count_limit}
     ...  count_succ_max=${object_count_limit}  transfer_size=${10240000}
@@ -70,6 +68,7 @@ Should Read Multiple Random Byte Ranges
     ...  --item-data-size=100KB
     ...  --load-op-limit-count=${object_count_limit}
     ...  --load-step-id=${step_id}
+    ...  --item-data-verify
     ...  --run-scenario=${MONGOOSE_CONTAINER_DATA_DIR}/${step_id}.js
     ...  --storage-driver-limit-concurrency=10
     &{env_params} =  Create Dictionary  ITEM_LIST_FILE=${MONGOOSE_CONTAINER_DATA_DIR}/${step_id}.csv  RANDOM_BYTE_RANGE_COUNT=${random_byte_range_count}

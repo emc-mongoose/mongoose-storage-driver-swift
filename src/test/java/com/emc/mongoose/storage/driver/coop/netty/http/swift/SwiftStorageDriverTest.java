@@ -34,7 +34,6 @@ import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
-
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Date;
@@ -44,7 +43,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.stream.Collectors;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,7 +50,8 @@ import org.junit.Test;
 public class SwiftStorageDriverTest
 				extends SwiftStorageDriver {
 
-	private static final Credential CREDENTIAL = Credential.getInstance("user1", "u5QtPuQx+W5nrrQQEg7nArBqSgC8qLiDt2RhQthb");
+	private static final Credential CREDENTIAL = Credential
+      .getInstance("user1", "u5QtPuQx+W5nrrQQEg7nArBqSgC8qLiDt2RhQthb");
 	private static final String AUTH_TOKEN = "AUTH_tk65840af9f6f74d1aaefac978cb8f0899";
 	private static final String NS = "ns1";
 
@@ -120,7 +119,8 @@ public class SwiftStorageDriverTest
 
 	private SwiftStorageDriverTest(final Config config)
 					throws Exception {
-		super("test-storage-driver-swift", DataInput.instance(null, "7a42d9c483244167", new SizeInBytes("4MB"), 16),
+		super("test-storage-driver-swift", DataInput
+            .instance(null, "7a42d9c483244167", new SizeInBytes("4MB"), 16),
 						config.configVal("storage"), false, config.intVal("load-batch-size"));
 	}
 
@@ -196,7 +196,8 @@ public class SwiftStorageDriverTest
 		final String container = "/container1";
 		final String itemPrefix = "0000";
 		final String markerItemId = "00003brre8lgz";
-		final Item markerItem = itemFactory.getItem(markerItemId, Long.parseLong(markerItemId, Character.MAX_RADIX), 10240);
+		final Item markerItem = itemFactory.getItem(markerItemId, Long
+        .parseLong(markerItemId, Character.MAX_RADIX), 10240);
 		final List<Item> items = list(itemFactory, container, itemPrefix, Character.MAX_RADIX, markerItem, 1000);
 		assertEquals(0, items.size());
 		assertEquals(1, httpRequestsLog.size());

@@ -17,9 +17,9 @@ import static com.github.akurilov.commons.lang.Exceptions.throwUnchecked;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
 import com.emc.mongoose.base.config.IllegalArgumentNameException;
+import com.emc.mongoose.base.config.IllegalConfigurationException;
 import com.emc.mongoose.base.data.DataInput;
 import com.emc.mongoose.base.env.DateUtil;
-import com.emc.mongoose.base.config.IllegalConfigurationException;
 import com.emc.mongoose.base.item.DataItem;
 import com.emc.mongoose.base.item.Item;
 import com.emc.mongoose.base.item.ItemFactory;
@@ -63,7 +63,8 @@ public class SwiftStorageDriver<I extends Item, O extends Operation<I>>
 				extends HttpStorageDriverBase<I, O> {
 
 	private static final String PART_NUM_MASK = "0000000";
-	private static final ThreadLocal<StringBuilder> CONTAINER_LIST_QUERY = ThreadLocal.withInitial(StringBuilder::new);
+	private static final ThreadLocal<StringBuilder> CONTAINER_LIST_QUERY = ThreadLocal
+      .withInitial(StringBuilder::new);
 	protected final boolean versioning;
 	private final String namespacePath;
 
@@ -84,7 +85,7 @@ public class SwiftStorageDriver<I extends Item, O extends Operation<I>>
 	}
 
 	@Override
-	protected final String requestNewPath(final String path)  {
+	protected final String requestNewPath(final String path) {
 		// check the destination container if it exists w/ HEAD request
 		final var nodeAddr = storageNodeAddrs[0];
 		final var containerUri = namespacePath + (path.startsWith(SLASH) ? path : SLASH + path);
@@ -174,8 +175,7 @@ public class SwiftStorageDriver<I extends Item, O extends Operation<I>>
 	}
 
 	@Override
-	protected final String requestNewAuthToken(final Credential credential)
-					 {
+	protected final String requestNewAuthToken(final Credential credential) {
 		final var nodeAddr = storageNodeAddrs[0];
 		final var reqHeaders = (HttpHeaders) new DefaultHttpHeaders();
 		reqHeaders.set(HttpHeaderNames.HOST, nodeAddr);

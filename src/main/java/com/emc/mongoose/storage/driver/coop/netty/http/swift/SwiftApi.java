@@ -4,16 +4,13 @@ import com.emc.mongoose.base.item.Item;
 import com.emc.mongoose.base.item.ItemFactory;
 import com.emc.mongoose.base.logging.LogUtil;
 import com.emc.mongoose.base.logging.Loggers;
-
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-
-import org.apache.logging.log4j.Level;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import org.apache.logging.log4j.Level;
 
 /**
 Created by andrey on 07.10.16.
@@ -38,8 +35,8 @@ public interface SwiftApi {
 	int MAX_LIST_LIMIT = 10_000;
 
 	static <I extends Item> int parseContainerListing(
-					final List<I> buff, final InputStream inStream, final String path,
-					final ItemFactory<I> itemFactory, final int idRadix) throws IOException {
+      final List<I> buff, final InputStream inStream, final String path,
+      final ItemFactory<I> itemFactory, final int idRadix) throws IOException {
 
 		final String path_ = path == null ? "" : (path.endsWith("/") ? path : path + "/");
 
