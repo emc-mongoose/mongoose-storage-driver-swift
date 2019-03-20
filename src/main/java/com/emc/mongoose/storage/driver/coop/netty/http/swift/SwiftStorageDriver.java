@@ -64,7 +64,7 @@ public class SwiftStorageDriver<I extends Item, O extends Operation<I>>
 
 	private static final String PART_NUM_MASK = "0000000";
 	private static final ThreadLocal<StringBuilder> CONTAINER_LIST_QUERY = ThreadLocal
-      .withInitial(StringBuilder::new);
+					.withInitial(StringBuilder::new);
 	protected final boolean versioning;
 	private final String namespacePath;
 
