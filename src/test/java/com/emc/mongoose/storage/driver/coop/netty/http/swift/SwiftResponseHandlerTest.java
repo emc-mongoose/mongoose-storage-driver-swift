@@ -4,10 +4,11 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.embedded.EmbeddedChannel;
 import io.netty.util.AttributeKey;
-import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
 
 /**
  * @author veronika K. on 28.02.19
@@ -84,7 +85,7 @@ public class SwiftResponseHandlerTest {
 		CHANNEL.writeOutbound(HTTP_RESPONSE);
 		final var expectedContent = Unpooled.copiedBuffer(EXPECTED_CONTENT.getBytes());
 		final var contentChunk = readFromChannel(CHANNEL);
-		final var newContentChunk = RESPONSE_HANDLER.removeHeaders(CHANNEL, null, contentChunk);
+		final var newContentChunk = RESPONSE_HANDLER.removeHeaders(CHANNEL, contentChunk);
 
 		Assert.assertEquals(expectedContent.array().length, newContentChunk.array().length);
 		assertEqualsByBytes(expectedContent, newContentChunk);
@@ -100,7 +101,7 @@ public class SwiftResponseHandlerTest {
 		final var rawActualContent = Unpooled.copiedBuffer(readFromChannel(CHANNEL),
 						readFromChannel(CHANNEL),
 						readFromChannel(CHANNEL));
-		final var actualContent = RESPONSE_HANDLER.removeHeaders(CHANNEL, null, rawActualContent);
+		final var actualContent = RESPONSE_HANDLER.removeHeaders(CHANNEL,  rawActualContent);
 
 		Assert.assertEquals(expectedContent.array().length, actualContent.array().length);
 		assertEqualsByBytes(expectedContent, actualContent);
@@ -112,11 +113,11 @@ public class SwiftResponseHandlerTest {
 
 		CHANNEL.writeOutbound(PART_1_HTTP_RESPONSE);
 		final var contentChunk1 = readFromChannel(CHANNEL);
-		final var newContentChunk1 = RESPONSE_HANDLER.removeHeaders(CHANNEL, null, contentChunk1);
+		final var newContentChunk1 = RESPONSE_HANDLER.removeHeaders(CHANNEL, contentChunk1);
 
 		CHANNEL.writeOutbound(PART_2_HTTP_RESPONSE);
 		final var contentChunk2 = readFromChannel(CHANNEL);
-		final var newContentChunk2 = RESPONSE_HANDLER.removeHeaders(CHANNEL, null, contentChunk2);
+		final var newContentChunk2 = RESPONSE_HANDLER.removeHeaders(CHANNEL, contentChunk2);
 
 		final var fullContentChunk = Unpooled.copiedBuffer(newContentChunk1, newContentChunk2);
 
