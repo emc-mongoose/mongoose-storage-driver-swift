@@ -16,55 +16,55 @@ import java.io.IOException;
 public class SwiftResponseHandlerTest {
 
 	private static final String HTTP_RESPONSE_START = ""
-		+ "\r\n--3d07fbbddf4041880c931c29e43cb6c4"
-		+ "\r\nContent-Type: application/octet-stream"
-		+ "\r\nContent-Range: bytes 0-4/10\r\n\r\n";
+					+ "\r\n--3d07fbbddf4041880c931c29e43cb6c4"
+					+ "\r\nContent-Type: application/octet-stream"
+					+ "\r\nContent-Range: bytes 0-4/10\r\n\r\n";
 
 	private static final String HTTP_RESPONSE_END = ""
-		+ "\r\n--3d07fbbddf4041880c931c29e43cb6c4--\r\n";
+					+ "\r\n--3d07fbbddf4041880c931c29e43cb6c4--\r\n";
 
 	private static final String HTTP_RESPONSE = ""
-		+ HTTP_RESPONSE_START
-		+ "\naaa\naa"
-		+ "\r\n--3d07fbbddf4041880c931c29e43cb6c4"
-		+ "\r\nContent-Type: application/octet-stream"
-		+ "\r\nContent-Range: bytes 5-9/10\r\n\r\n"
-		+ "aaaaa"
-		+ HTTP_RESPONSE_END;
+					+ HTTP_RESPONSE_START
+					+ "\naaa\naa"
+					+ "\r\n--3d07fbbddf4041880c931c29e43cb6c4"
+					+ "\r\nContent-Type: application/octet-stream"
+					+ "\r\nContent-Range: bytes 5-9/10\r\n\r\n"
+					+ "aaaaa"
+					+ HTTP_RESPONSE_END;
 
 	private static final String PART_1_HTTP_RESPONSE_1 = ""
-		+ HTTP_RESPONSE_START
-		+ "\naaa\naa"
-		+ "\r\n--3d07fbbddf4041880c931c29e43cb6c4"
-		+ "\r\nContent-Type: appli";
+					+ HTTP_RESPONSE_START
+					+ "\naaa\naa"
+					+ "\r\n--3d07fbbddf4041880c931c29e43cb6c4"
+					+ "\r\nContent-Type: appli";
 
 	private static final String PART_2_HTTP_RESPONSE_1 = ""
-		+ "cation/octet-stream"
-		+ "\r\nContent-Range: bytes 5-9/10\r\n\r\n"
-		+ "aaaaa"
-		+ HTTP_RESPONSE_END;
+					+ "cation/octet-stream"
+					+ "\r\nContent-Range: bytes 5-9/10\r\n\r\n"
+					+ "aaaaa"
+					+ HTTP_RESPONSE_END;
 
 	private static final String PART_1_HTTP_RESPONSE_2 = ""
-		+ HTTP_RESPONSE_START
-		+ "\naaa\naa"
-		+ "\r\n--3d07fbbddf4041880c931c29e43cb6c4"
-		+ "\r\nContent-Type: application/octet-stream"
-		+ "\r\nContent-Range: bytes 0-4/10\r\n\r";
+					+ HTTP_RESPONSE_START
+					+ "\naaa\naa"
+					+ "\r\n--3d07fbbddf4041880c931c29e43cb6c4"
+					+ "\r\nContent-Type: application/octet-stream"
+					+ "\r\nContent-Range: bytes 0-4/10\r\n\r";
 
 	private static final String PART_2_HTTP_RESPONSE_2 = ""
-		+ "\n"
-		+ "aaaaa"
-		+ HTTP_RESPONSE_END;
+					+ "\n"
+					+ "aaaaa"
+					+ HTTP_RESPONSE_END;
 
 	private static final String EXPECTED_CONTENT = "\naaa\naaaaaaa";
 	private static final String BOUNDARY = "--3d07fbbddf4041880c931c29e43cb6c4";
 	private static final EmbeddedChannel channel = new EmbeddedChannel(); // channel mock
 	private static final AttributeKey<String> ATTR_KEY_BOUNDARY_MARKER = AttributeKey
-		.valueOf("boundary_marker");
+					.valueOf("boundary_marker");
 	private static final AttributeKey<String> ATTR_KEY_CUT_CHUNK = AttributeKey
-		.valueOf("cut_chunk");
+					.valueOf("cut_chunk");
 	private static final SwiftResponseHandler responseHandler = new SwiftResponseHandler(null,
-		true);
+					true);
 
 	@Before
 	public void setUp() {
@@ -84,7 +84,7 @@ public class SwiftResponseHandlerTest {
 	}
 
 	private void assertEqualsByBytes(final ByteBuf expectedContent,
-		final ByteBuf actualContent) {
+					final ByteBuf actualContent) {
 		while (expectedContent.isReadable()) {
 			final var a = expectedContent.readByte();
 			final var b = actualContent.readByte();
@@ -111,8 +111,8 @@ public class SwiftResponseHandlerTest {
 		channel.writeOutbound(expectedContent);
 		channel.writeOutbound(HTTP_RESPONSE_END);
 		final var rawActualContent = Unpooled.copiedBuffer(readFromChannel(channel),
-			readFromChannel(channel),
-			readFromChannel(channel));
+						readFromChannel(channel),
+						readFromChannel(channel));
 		final var actualContent = responseHandler.removeHeaders(channel, rawActualContent);
 
 		Assert.assertEquals(expectedContent.array().length, actualContent.array().length);

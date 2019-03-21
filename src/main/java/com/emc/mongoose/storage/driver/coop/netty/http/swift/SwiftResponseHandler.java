@@ -31,27 +31,27 @@ import static com.emc.mongoose.storage.driver.coop.netty.http.swift.SwiftApi.VAL
  * Created by andrey on 26.11.16.
  */
 public final class SwiftResponseHandler<I extends Item, O extends Operation<I>>
-	extends HttpResponseHandlerBase<I, O> {
+				extends HttpResponseHandlerBase<I, O> {
 
 	private static final Pattern BOUNDARY_VALUE_PATTERN = Pattern.compile(
-		VALUE_MULTIPART_BYTERANGES + ";" + HttpHeaderValues.BOUNDARY + "=([0-9a-f]+)");
+					VALUE_MULTIPART_BYTERANGES + ";" + HttpHeaderValues.BOUNDARY + "=([0-9a-f]+)");
 	private static final String HEADER_PATTERN = "(Content-Type:).+[\\s]+(Content-Range:).+";
 
 	private static final String HEADER_WITH_BOUNDARY_PATTERN = "[\\s]{2}((%1$s)[\\s]+(" + HEADER_PATTERN + ")\\r\\n|(%1$s--))\\r\\n";
 	private static final Pattern END_PATTERN = Pattern.compile("(\\r\\Z|\\r\\n([-]\\Z|[-]{2}\\Z|[-]{2}(.|\\s)*))");
 	private static final AttributeKey<String> ATTR_KEY_BOUNDARY_MARKER = AttributeKey
-		.valueOf("boundary_marker");
+					.valueOf("boundary_marker");
 	private static final AttributeKey<String> ATTR_KEY_CUT_CHUNK = AttributeKey
-		.valueOf("cut_chunk");
+					.valueOf("cut_chunk");
 
 	public SwiftResponseHandler(final HttpStorageDriverBase<I, O> driver,
-		final boolean verifyFlag) {
+					final boolean verifyFlag) {
 		super(driver, verifyFlag);
 	}
 
 	@Override
 	protected final void handleResponseHeaders(
-		final Channel channel, final O op, final HttpHeaders respHeaders) {
+					final Channel channel, final O op, final HttpHeaders respHeaders) {
 		final String contentType = respHeaders.get(HttpHeaderNames.CONTENT_TYPE);
 		if (contentType != null) {
 			final Matcher boundaryMatcher = BOUNDARY_VALUE_PATTERN.matcher(contentType);
@@ -69,25 +69,25 @@ public final class SwiftResponseHandler<I extends Item, O extends Operation<I>>
 	--ac9c12f841fa093d82ba80a402f6b62e
 	Content-Type: application/octet-stream
 	Content-Range: bytes 0-0/10240
-
+	
 	?
 	--ac9c12f841fa093d82ba80a402f6b62e
 	Content-Type: application/octet-stream
 	Content-Range: bytes 3-6/10240
-
+	
 	????
 	--ac9c12f841fa093d82ba80a402f6b62e--
 	*/
 	protected final void handleResponseContentChunk(final Channel channel, final O op,
-		final ByteBuf contentChunk)
-	throws IOException {
+					final ByteBuf contentChunk)
+					throws IOException {
 		if (OpType.READ.equals(op.type())) {
 			if (op instanceof DataOperation) {
 				final DataOperation<? extends DataItem> dataOp = (DataOperation<? extends DataItem>) op;
 				final BitSet[] markedRangesMaskPair = dataOp.markedRangesMaskPair();
 				// if the count of marked byte ranges > 1
 				if (1 < markedRangesMaskPair[0].cardinality() + markedRangesMaskPair[1]
-					.cardinality()) {
+								.cardinality()) {
 					final ByteBuf newContentChunk = removeHeaders(channel, contentChunk);
 					super.handleResponseContentChunk(channel, op, newContentChunk);
 				} else {
@@ -160,7 +160,7 @@ public final class SwiftResponseHandler<I extends Item, O extends Operation<I>>
 			return bytesChunk;
 		}
 		final var cutString = tmpString
-			.substring(lastMatchResult.start(), lastMatchResult.end());
+						.substring(lastMatchResult.start(), lastMatchResult.end());
 		channel.attr(ATTR_KEY_CUT_CHUNK).set(cutString); //cutString includes only writable chars
 		final var newSize = bytesChunk.length - cutString.length();
 		newBytesChunk = new byte[newSize];
