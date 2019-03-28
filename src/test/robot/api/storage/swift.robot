@@ -21,6 +21,40 @@ ${SWIFT_STORAGE_CONTAINER_NAME} =  swift_server
 ${MONGOOSE_SHARED_ARGS} =  --storage-driver-type=swift --storage-namespace=AUTH_test --storage-net-node-port=${SWIFT_PORT} --storage-auth-uid=${SWIFT_UID}
 
 *** Test Cases ***
+Should Read Multiple Random Byte Ranges
+    ${step_id} =  Set Variable  read_multiple_random_byte_ranges
+    ${object_count_limit} =  Convert To Integer  1000
+    ${random_byte_range_count} =  Convert To Integer  10
+    Remove Directory  ${LOG_DIR}/${step_id}  recursive=True
+    Remove File  ${DATA_DIR}/${step_id}.csv
+    ${args} =  Catenate  SEPARATOR= \\\n\t
+    ...  --item-data-size=100KB
+    ...  --load-op-limit-count=${object_count_limit}
+    ...  --load-step-id=${step_id}
+    ...  --item-data-verify
+    ...  --run-scenario=${MONGOOSE_CONTAINER_DATA_DIR}/${step_id}.js
+    ...  --storage-driver-limit-concurrency=10
+    &{env_params} =  Create Dictionary  ITEM_LIST_FILE=${MONGOOSE_CONTAINER_DATA_DIR}/${step_id}.csv  RANDOM_BYTE_RANGE_COUNT=${random_byte_range_count}
+    ${std_out} =  Execute Mongoose Scenario  ${DATA_DIR}  ${env_params}  ${MONGOOSE_SHARED_ARGS} ${args} --storage-auth-secret=${SWIFT_SECRET_KEY}
+    Log  ${std_out}
+    Validate Log File Metrics Total  ${LOG_DIR}/${step_id}  op_type=READ  count_succ_min=${object_count_limit}
+    ...  count_succ_max=${object_count_limit}  transfer_size=${60000000}  transfer_size_delta=${10000000}
+
+Should Create Auth Tokens
+    ${step_id} =  Set Variable  create_auth_tokens
+    ${token_count_limit} =  Convert To Integer  1000
+    Remove Directory  ${LOG_DIR}/${step_id}  recursive=True
+    ${args} =  Catenate  SEPARATOR= \\\n\t
+    ...  --item-type=token
+    ...  --load-op-limit-count=${token_count_limit}
+    ...  --load-step-id=${step_id}
+    ...  --storage-driver-limit-concurrency=10
+    &{env_params} =  Create Dictionary
+    ${std_out} =  Execute Mongoose Scenario  ${DATA_DIR}  ${env_params}  ${MONGOOSE_SHARED_ARGS} ${args} --storage-auth-secret=${SWIFT_SECRET_KEY}
+    Log  ${std_out}
+    Validate Log File Metrics Total  ${LOG_DIR}/${step_id}  count_succ_min=${token_count_limit}
+    ...  count_succ_max=${token_count_limit}
+
 Should Copy Objects Using Container Listing
     ${step_id} =  Set Variable  copy_objects_using_container_listing
     ${object_count_limit} =  Convert To Integer  1000
@@ -57,40 +91,6 @@ Should Create Dynamic Large Objects
     ...  count_fail_max=${10}  transfer_size=${2147483648}  transfer_size_delta=${167772160}
     Validate Item Output File  item_output_file_name=${DATA_DIR}/${step_id}.csv  item_output_path=dlo
     ...  item_size_min=${20971520}  item_size_max=${104857600}
-
-Should Read Multiple Random Byte Ranges
-    ${step_id} =  Set Variable  read_multiple_random_byte_ranges
-    ${object_count_limit} =  Convert To Integer  1000
-    ${random_byte_range_count} =  Convert To Integer  10
-    Remove Directory  ${LOG_DIR}/${step_id}  recursive=True
-    Remove File  ${DATA_DIR}/${step_id}.csv
-    ${args} =  Catenate  SEPARATOR= \\\n\t
-    ...  --item-data-size=100KB
-    ...  --load-op-limit-count=${object_count_limit}
-    ...  --load-step-id=${step_id}
-    ...  --item-data-verify
-    ...  --run-scenario=${MONGOOSE_CONTAINER_DATA_DIR}/${step_id}.js
-    ...  --storage-driver-limit-concurrency=10
-    &{env_params} =  Create Dictionary  ITEM_LIST_FILE=${MONGOOSE_CONTAINER_DATA_DIR}/${step_id}.csv  RANDOM_BYTE_RANGE_COUNT=${random_byte_range_count}
-    ${std_out} =  Execute Mongoose Scenario  ${DATA_DIR}  ${env_params}  ${MONGOOSE_SHARED_ARGS} ${args} --storage-auth-secret=${SWIFT_SECRET_KEY}
-    Log  ${std_out}
-    Validate Log File Metrics Total  ${LOG_DIR}/${step_id}  op_type=READ  count_succ_min=${object_count_limit}
-    ...  count_succ_max=${object_count_limit}  transfer_size=${60000000}  transfer_size_delta=${10000000}
-
-Should Create Auth Tokens
-    ${step_id} =  Set Variable  create_auth_tokens
-    ${token_count_limit} =  Convert To Integer  1000
-    Remove Directory  ${LOG_DIR}/${step_id}  recursive=True
-    ${args} =  Catenate  SEPARATOR= \\\n\t
-    ...  --item-type=token
-    ...  --load-op-limit-count=${token_count_limit}
-    ...  --load-step-id=${step_id}
-    ...  --storage-driver-limit-concurrency=10
-    &{env_params} =  Create Dictionary
-    ${std_out} =  Execute Mongoose Scenario  ${DATA_DIR}  ${env_params}  ${MONGOOSE_SHARED_ARGS} ${args} --storage-auth-secret=${SWIFT_SECRET_KEY}
-    Log  ${std_out}
-    Validate Log File Metrics Total  ${LOG_DIR}/${step_id}  count_succ_min=${token_count_limit}
-    ...  count_succ_max=${token_count_limit}
 
 *** Keywords ***
 Start Swift Server
