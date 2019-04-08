@@ -37,7 +37,7 @@ ext {
 		disruptor          : "3.4.2",
 		fiber4j            : "1.1.0",
 		jackson	           : "2.9.8",
-		javaCommons        : "2.3.5",
+		javaCommons        : "2.3.6",
 		javassist          : "3.23.1-GA",
 		junit              : "4.12",
 		log4j              : "2.8.2",
