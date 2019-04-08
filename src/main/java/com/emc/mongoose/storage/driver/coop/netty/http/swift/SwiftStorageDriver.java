@@ -321,8 +321,25 @@ public class SwiftStorageDriver<I extends Item, O extends Operation<I>>
 				} else {
 					final var subOps = (List<O>) compositeOp.subOperations();
 					final var n = subOps.size();
-					for (var j = 0; j < n; j += super.submit(subOps, j, n)) {
-						LockSupport.parkNanos(1);
+					if (n > 0) {
+						// NOTE: blocking sub-ops submission
+						while (!super.submit(subOps.get(0))) {
+							LockSupport.parkNanos(1);
+						}
+						try {
+							for (var j = 1; j < n; j++) {
+								childOpQueue.put(subOps.get(j));
+							}
+						} catch (final InterruptedException e) {
+							LogUtil.exception(
+											Level.DEBUG,
+											e,
+											"{}: interrupted while enqueueing the child sub-operations",
+											toString());
+							throwUnchecked(e);
+						}
+					} else {
+						throw new AssertionError("Composite load operation yields 0 sub-operations");
 					}
 				}
 			} else {
