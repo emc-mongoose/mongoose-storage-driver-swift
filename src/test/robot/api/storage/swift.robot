@@ -76,12 +76,12 @@ Should Create Dynamic Large Objects
     Remove Directory  ${LOG_DIR}/${step_id}  recursive=True
     Remove File  ${DATA_DIR}/${step_id}.csv
     ${args} =  Catenate  SEPARATOR= \\\n\t
-    ...  --item-data-ranges-threshold=4KB
-    ...  --item-data-size=10KB-100KB
+    ...  --item-data-ranges-threshold=16MB
+    ...  --item-data-size=20MB-100MB
     ...  --item-output-file=${MONGOOSE_CONTAINER_DATA_DIR}/${step_id}.csv
     ...  --item-output-path=dlo
     ...  --load-batch-size=1
-    ...  --load-step-limit-size=10MB
+    ...  --load-step-limit-size=2GB
     ...  --load-step-id=${step_id}
     ...  --storage-driver-limit-concurrency=10
     &{env_params} =  Create Dictionary
