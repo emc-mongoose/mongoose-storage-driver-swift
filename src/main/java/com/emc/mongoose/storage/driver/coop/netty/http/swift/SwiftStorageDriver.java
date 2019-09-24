@@ -88,9 +88,11 @@ public class SwiftStorageDriver<I extends Item, O extends Operation<I>>
 	protected final String requestNewPath(final String path) {
 		// check the destination container if it exists w/ HEAD request
 		final var nodeAddr = storageNodeAddrs[0];
-		final var containerUri = namespacePath + (path.startsWith(SLASH) ? path : SLASH + path);
+		final var relPath = path.startsWith(SLASH) ? path.substring(1) : path;
+		final var slashPos = relPath.indexOf(SLASH);
+		final var containerPath = namespacePath + SLASH + (slashPos > 0 ? relPath.substring(0, slashPos) : relPath);
 		final var uriQuery = uriQuery();
-		final var reqUri = uriQuery == null || uriQuery.isEmpty() ? containerUri : containerUri + uriQuery;
+		final var reqUri = uriQuery == null || uriQuery.isEmpty() ? containerPath : containerPath + uriQuery;
 		var reqHeaders = (HttpHeaders) new DefaultHttpHeaders();
 		reqHeaders.set(HttpHeaderNames.HOST, nodeAddr);
 		reqHeaders.set(HttpHeaderNames.CONTENT_LENGTH, 0);
