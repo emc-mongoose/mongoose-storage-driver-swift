@@ -105,7 +105,6 @@ public class SwiftStorageDriverTest
 			config.val("storage-auth-secret", CREDENTIAL.getSecret());
 			config.val("storage-driver-threads", 0);
 			config.val("storage-driver-limit-queue-input", 1_000_000);
-			config.val("storage-driver-limit-queue-output", 1_000_000);
 			return config;
 		} catch (final Throwable cause) {
 			throw new RuntimeException(cause);
