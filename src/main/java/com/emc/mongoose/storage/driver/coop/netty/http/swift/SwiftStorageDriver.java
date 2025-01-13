@@ -490,6 +490,9 @@ public class SwiftStorageDriver<I extends Item, O extends Operation<I>>
 	}
 
 	@Override
+	protected void applyChecksum(final HttpHeaders httpHeaders, final O op) {}
+
+	@Override
 	protected final void applyMetaDataHeaders(final HttpHeaders httpHeaders) {}
 
 	@Override
