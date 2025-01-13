@@ -25,7 +25,7 @@ repositories {
 
 description = "Mongoose is a high-load storage performance testing tool"
 group = "com.github.emc-mongoose"
-version = "4.2.13"
+version = "4.2.14"
 sourceCompatibility = 11
 targetCompatibility = 11
 
@@ -44,7 +44,7 @@ ext {
 		mongooseBase       : "4.3.3",
 		mongooseStorageDriverCoop: "4.2.21",
 		mongooseStorageDriverNetty: "4.2.18",
-		mongooseStorageDriverHttp: "4.2.20",
+		mongooseStorageDriverHttp: "4.2.22",
 		netty              : "4.1.25.Final",
 		scala              : "2.12.6",
 		slf4j              : "1.7.25",
@@ -78,7 +78,7 @@ dependencies {
 		"com.github.emc-mongoose:mongoose-base:${depVersion.mongooseBase}",
 		"com.github.emc-mongoose:mongoose-storage-driver-coop:${depVersion.mongooseStorageDriverCoop}",
 		"com.github.emc-mongoose:mongoose-storage-driver-netty:${depVersion.mongooseStorageDriverNetty}",
-		"com.github.emc-mongoose:mongoose-storage-driver-http:${depVersion.mongooseStorageDriverNetty}",
+		"com.github.emc-mongoose:mongoose-storage-driver-http:${depVersion.mongooseStorageDriverHttp}",
 		"com.github.akurilov:confuse:${depVersion.confuse}",
 		"com.github.akurilov:confuse-io-yaml:${depVersion.confuseIoYaml}",
 		"com.github.akurilov:java-commons:${depVersion.javaCommons}",
